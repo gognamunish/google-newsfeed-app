@@ -62,13 +62,14 @@ public class SpreadsheetService {
             }
         }
 
+        log.info("SpreadSheet Id: {}", sheetIdOptional.get().getId());
         return sheetIdOptional.get().getId();
     }
 
 
     public void writeToSheet(Company company, NewsAPIResponse response) {
         String spreadsheetId = getOrCreateNewSheet();
-        log.info("Going to write articles for {} to sheet {} ", getOrCreateNewSheet());
+        log.info("Going to write articles to sheet {} ", company.getName());
         LocalDateTime currentDateTime = LocalDateTime.now();
         try {
 
@@ -84,8 +85,10 @@ public class SpreadsheetService {
 
 
             // Company specific Sheets
-            data.add(new ValueRange().setRange(company.getName() + "!A" + rowCounter.getAndIncrement()).setValues(HEADERS));
+            String rangePrefix = company.getName() + "!A";
+            data.add(new ValueRange().setRange(rangePrefix + rowCounter.getAndIncrement()).setValues(HEADERS));
             response.getArticles().stream().filter(articleToFilter -> {
+                // we will discard any article older than a year
                 LocalDateTime publishedDate = LocalDateTime.ofInstant(articleToFilter.getPublishedAt().toInstant(), ZoneId.systemDefault());
                 Long daysDifference = ChronoUnit.DAYS.between(publishedDate, currentDateTime);
                 log.debug("Days difference: {} ", daysDifference);
@@ -101,7 +104,7 @@ public class SpreadsheetService {
                                 SafeCellValue.get(article.getUrlToImage()),
                                 SafeCellValue.get(article.getPublishedAt().toString()),
                                 SafeCellValue.get(article.getContent())));
-                data.add(new ValueRange().setRange(company.getName() + "!A" + rowCounter.getAndIncrement()).setValues(articleRow));
+                data.add(new ValueRange().setRange(rangePrefix + rowCounter.getAndIncrement()).setValues(articleRow));
             });
 
 

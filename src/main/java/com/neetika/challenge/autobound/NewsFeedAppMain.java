@@ -1,14 +1,17 @@
 package com.neetika.challenge.autobound;
 
 
-import com.neetika.challenge.autobound.repository.SpreadSheetRepository;
 import com.neetika.challenge.autobound.service.SpreadSheetUpdaterService;
 import com.neetika.challenge.autobound.service.SpreadsheetService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
+@Slf4j
+@EnableScheduling
 @SpringBootApplication
 public class NewsFeedAppMain {
 
@@ -18,10 +21,14 @@ public class NewsFeedAppMain {
 
 
     @Bean
-    CommandLineRunner initialize(SpreadSheetRepository spreadSheetRepository, SpreadSheetUpdaterService service, SpreadsheetService spreadsheetService) {
+    CommandLineRunner initialize(SpreadsheetService spreadsheetService,
+                                 SpreadSheetUpdaterService spreadSheetUpdaterService) {
+        log.info("Initializing Spreadsheet...");
         return args -> {
             spreadsheetService.getOrCreateNewSheet();
-            service.fetchAndUpdate();
+
+            //explicit call on start up to prepare contents
+            spreadSheetUpdaterService.fetchAndUpdate();
         };
     }
 
