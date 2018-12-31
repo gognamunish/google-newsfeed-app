@@ -25,13 +25,14 @@ java NewsFeedAppMain
 
 Once the application starts SpreadSheetUpdaterService.fetchAndUpdate() runs every 30 minutes to update the Articles.
 ```$xslt
-2018-12-31 16:56:10.197  INFO 1606 --- [           main] c.n.c.a.s.SpreadSheetUpdaterService      : Please verify results at https://docs.google.com/spreadsheets/d/1q1bQCdomwyCxfRLWubPRfWbmRFwfPXRgnABLw4-iwDU/edit
+2018-12-31 16:56:10.197  INFO 1606 --- [           main] c.n.c.a.s.SpreadSheetUpdaterService 
+Please verify results at https://docs.google.com/spreadsheets/d/1q1bQCdomwyCxfRLWubPRfWbmRFwfPXRgnABLw4-iwDU/edit
 ```
 
 ## Stack
 - Java 1.8
 - Spring Boot
-- Lombok 
+- Lombok (Install Lombol Plugin in IntelliJ/Eclipse)
 - H2
 
 
