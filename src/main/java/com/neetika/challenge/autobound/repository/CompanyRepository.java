@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 public interface CompanyRepository extends JpaRepository<Company, Long> {
 
-    @Query ("select id, name from Company where name=:name")
+    @Query ("select c from Company c where name=:name")
     List<Company> findAllByName (@Param("name") String name);
 
 }
